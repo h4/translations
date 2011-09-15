@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <title>Text size in translation</title>
+</head>
+<body>
+<h1>Text size in translation</h1>
+
+<div class="section"><a id="contentstart" name="contentstart"></a>
+
+    <div id="audience">
+        <p><span class="leadin">Intended audience:</span> XHTML/HTML coders (using editors or scripting), CSS coders,
+            Web project managers, localizers, and anyone seeking background information on how variations in text length
+            during localization can affect page design.</p>
+
+        <p class='updated'>Updated <a
+                href='http://www.w3.org/blog/International?s=article-text-size&amp;sentence=sentence&amp;blog=1&amp;submit=Search'>2007-06-14
+            07:31</a></p></div>
+    <p>When text is translated from one language to another, the length of the source and translated text is likely to
+        be different. There are
+        some ways in which these differences in length can be systematic.</p>
+
+    <p>This article provides background material that will briefly explore some of these systematic differences. Other
+        articles will deal with
+        specific implications for the design of Web pages and proposed solutions. </p>
+
+    <p>In general, the more flexibly you can design your layout, the better. Allow text to reflow and avoid small
+        fixed-width containers or
+        tight squeezes where possible. Be especially careful about fitting text snugly into graphic designs. Separate
+        presentation and content, so that font
+        sizes, line heights, etc. can be easily adapted for translated text. You should also bear these ideas in mind
+        when designing database field widths in
+        character lengths.</p>
+</div>
+<div class="section">
+
+    <h2><a id="predict" tabindex="1" name="predict">English and Chinese are particularly problematic</a></h2>
+
+    <p>English and Chinese text is typically very compact, and text translated from these languages will typically be
+        longer in the translation
+        than the original – sometimes to an alarming degree. </p>
+
+    <div class="sidenoteGroup">
+        <p><a href="http://www.flickr.com/photos/ishida/372564108/"><img src="images/photostream.jpg"
+                                                                         alt="A picture in a Flickr 'photostream'."
+                                                                         style="float: left;" width="216" height="351"/></a>
+            For example, the <a href="http://www.flickr.com">Flickr</a> user interface was recently
+            translated into several languages. One of the more common messages when you are looking at your own photos
+            tells you how many times the photo page
+            has been viewed, eg. "392 views". The following table shows comparative lengths of the word Flickr used for
+            'views' as a ratio* to the original
+            English:</p>
+
+        <table id="size">
+            <tr>
+                <th>Language</th>
+                <th>Translation</th>
+                <th>Ratio</th>
+            </tr>
+            <tr>
+                <th>Korean</th>
+                <td lang="ko" xml:lang="ko">조회</td>
+                <td>0.8</td>
+            </tr>
+            <tr>
+                <th>English</th>
+                <td lang="en">views</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <th>Chinese</th>
+                <td lang="zh-Hant" xml:lang="zh-Hant">次檢視</td>
+                <td>1.2</td>
+            </tr>
+            <tr>
+                <th>Portuguese</th>
+                <td lang="pt" xml:lang="pt">visualizações</td>
+                <td>2.6</td>
+            </tr>
+            <tr>
+                <th>French</th>
+                <td lang="fr" xml:lang="fr">consultations</td>
+                <td>2.6</td>
+            </tr>
+            <tr>
+                <th>German</th>
+                <td lang="de" xml:lang="de">-mal angesehen</td>
+                <td>2.8</td>
+            </tr>
+            <tr>
+                <th>Italian</th>
+                <td lang="it" xml:lang="it">visualizzazioni</td>
+                <td>3</td>
+            </tr>
+        </table>
+
+        <div class="sidenote">* Because of the width of the glyphs involved, each Chinese and Korean character is
+            counted as two English
+            characters in width.
+        </div>
+    </div>
+    <p>The 300% expansion from English to Italian is not at all surprising for a small string such as this. The
+        following are average expected
+        expansion rates for text translated from English into European languages, as published by IBM in their National
+        Language Design Guide Volume 1, in
+        1994.</p>
+
+    <table>
+        <tr>
+            <th>No. of characters<br/>in English source</th>
+            <th>Average expansion</th>
+        </tr>
+        <tr>
+            <td>Up to 10</td>
+            <td>200–300%</td>
+        </tr>
+        <tr>
+            <td>11–20</td>
+            <td>180–200%</td>
+        </tr>
+        <tr>
+            <td>21–30</td>
+            <td>160–180%</td>
+        </tr>
+        <tr>
+            <td>31–50</td>
+            <td>140–160%</td>
+        </tr>
+        <tr>
+            <td>51–70</td>
+            <td>130–140%</td>
+        </tr>
+        <tr>
+            <td>Over 70</td>
+            <td>150%</td>
+        </tr>
+    </table>
+
+    <p>The general message is that text will normally expand, but note carefully how the smaller the source message, the
+        higher the likely
+        translation length.</p>
+
+    <p>Of course, this is not true for every string or message, but when it is you must have some way of dealing with
+        it. For example, Flickr
+        translates "FAQ" as "FAQ" in German and French, but as "<span lang="pt"
+                                                                      xml:lang="pt">Perguntas freqüentes</span>" in
+        Portuguese, and "<span
+                lang="es" xml:lang="es">Preguntas frecuentes</span>" in Spanish. </p>
+
+    <p>The problem tends to be that the smaller the English text, the more likely it is to be squeezed into a small
+        space, such as alongside a
+        form entry field, or inside a graphic, or a set of width restricted tabs, etc.</p>
+
+    <p>Bear in mind, also, that text expansion is not exclusively the problem of user interfaces with source text in
+        English and Chinese. If
+        your original text is in Spanish, the term "<span lang="es" xml:lang="es">Idioma de la interfaz</span>" will be
+        smaller in English ("Interface
+        language"), but much longer in Malay ("<span xml:lang="ms" lang="ms">Bahasar pegantar untuk penelusuran</span>").
+        Also, smaller translations can be
+        as problematic as bigger ones if they leave too much white space on the page.</p>
+
+    <p>When dealing with paragraphs of text, the relative expansion is likely to be less, but there may still be things
+        you should consider. For
+        example, will you still be able to fit everything you wanted 'above the fold'? Will items still align the way
+        you want if they grow downwards at
+        different rates?</p>
+</div>
+<div class="section">
+
+    <h2><a id="complications" tabindex="1" name="complications">Complicating factors</a></h2>
+
+    <p>In addition to the unpredictability of the number of characters resulting from translation, there are other
+        factors that complicate the
+        management of text layout.</p>
+
+    <div class="section2">
+
+        <h3><a id="compound" name="compound" href="#compound">Compound nouns</a></h3>
+
+        <p>A number of languages, such as Finnish, German and Dutch, create single large 'words' to replace what is a
+            sequence of smaller words
+            in other languages.</p>
+
+        <p>For example, the English "Input processing features" may become "<span lang="de" xml:lang="de">Eingabeverarbeitungsfunktionen</span>"
+            in
+            German. Whereas the English text can easily be wrapped on two lines where there is restricted width
+            available, such as alongside a form entry field,
+            or in a series of tabs or buttons, or in narrow columns, the German may not wrap automatically, and may pose
+            a challenge for your layout.</p>
+    </div>
+    <div class="section2">
+
+        <h3><a id="width" name="width" href="#width">Character width</a></h3>
+
+        <p>Chinese, Japanese and Korean, amongst others, are scripts that typically have more complicated characters
+            than those in the Latin
+            script. This can mean that even if the number of characters in translation remains the same, or even
+            slightly less, the horizontal space required may
+            be much larger.</p>
+
+        <p>For example, the English "desktop" becomes "<span lang="ja" xml:lang="ja">デスクトップ</span>" in Japanese. The
+            Japanese has one less
+            character, but will typically take up much more horizontal space.</p>
+    </div>
+    <div class="section2">
+
+        <h3><a id="height" name="height" href="#height">Character and line height</a></h3>
+
+        <p>It is very common for non-Latin text to have much taller characters than Latin text. Not only that, but these
+            scripts often require
+            more vertical space between lines than does Latin text.</p>
+
+        <p>For example, the graphic below shows the same text in English and Thai. Note how there are two lines in each
+            case, but the vertical
+            space taken up by the Thai is much greater. This is partly due to the complexity of the characters (which
+            leads to taller glyphs, and therefore
+            increased line height), but it is also typical to have larger inter-line spacing in Thai than is found in
+            Latin text. There are numerous scripts
+            which require much more height than Latin text, including Arabic (especially in Nastaliq fonts), Chinese,
+            Devanagari (used for Hindi), Japanese, Korean, Tibetan, etc.</p>
+
+        <p><img src="images/en-th-line-height.gif" height="90" width="524"
+                alt="Comparison showing Thai text consuming around 150% of the vertical space of the Latin text."/></p>
+    </div>
+    <div class="section2">
+
+        <h3><a id="abbr" name="abbr" href="#abbr">Think twice about abbreviations</a></h3>
+
+        <p>If you are abbreviating your text <em>to make it fit in a restricted space</em>, you should really consider
+            whether this is a good
+            idea. Other languages may not be able to replicate such an abbreviation, and the text may need to be bigger
+            in translation.</p>
+
+        <p>In many languages abbreviation is uncommon. This may be down to the style of that language. In other cases it
+            may due to more
+            practical concerns. For example, Arabic 'words' tend to be constructed from very compact, pattern-based
+            roots with prefixes, suffixes and small
+            internal changes to express the precise meaning. It can be hard to abbreviate without losing meaning.</p>
+
+        <p>(Note also that you may need to provide translators with a list of expansions for abbreviations you
+            use.) </p>
+    </div>
+</body>
+</html>
