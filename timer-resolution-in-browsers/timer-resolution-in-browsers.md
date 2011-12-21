@@ -1,36 +1,34 @@
 # Точность таймера
 
-http://www.nczonline.net/blog/2011/12/14/timer-resolution-in-browsers/
+[Оригинал статьи](http://www.nczonline.net/blog/2011/12/14/timer-resolution-in-browsers/) на сайте 
 
-Timer resolution refers to how frequently a clock is updated. For most of their history, web browsers used the default system timer for functionality such as setTimeout() and setInterval(). This meant browsers could only schedule code to run as frequently as the system timer would fire. Internet Explorer also used the system clock for seeding values in Date object, so dates could only be created with differences equivalent to the timer resolution.
+Точность таймера (в оригинальной статье — разрешение) определяет, как часто обновляются внутренние часы. Исторически сложилось так, что браузеры используют системный таймер для таких функций, как setTimeout() и setInterval(). Это означает, что точность выполнения кода по расписанию в браузерах не может превышать точность системного таймера. Кроме того, Internet Explorer использует системный таймер для установки значений в объекте Date, таким образом разница между объектами даты зависит от точности системного таймера.
 
-A brief history
+## Немного истории
 
-Windows machines have a timer resolution of 10-15.6ms by default (most at 15.6ms), which meant that browsers using the system timer were stuck to this resolution. Of course, 10-15.6ms is a lifetime when you have a CPU running as fast as today’s processors do. It probably doesn’t surprise you that Internet Explorer through version 8 exclusively used system timers and so led to John Resig writing about how timer resolution affects benchmarks[1]. On OS X, browser timers were much more accurate than on Windows.
+По умолчанию точность таймера в windows находится в пределах в 10…15.6 миллисекунда (чаще всего — 15.6 мс), а значит браузеры вынуждены работать с такой же точностью. Естественно, вы получите точность в 10…15.6 мс в случае, если ваш процессор достаточно современный и быстрый. Думаю, вас не удивит, что IE до восьмой версии включительно использует только системный таймер, и это даже  побудило Джона Ресига [написать статью](http://ejohn.org/blog/accuracy-of-javascript-time/) о том, как точность таймера влияет на различные тесты. В Mac OS X  точность таймера существенно выше, чем в Windows.
 
-Until recently, the other browsers on Window also used the system timer and so were all stuck at 15.6ms timer resolution. This was true for Firefox, Safari, and Opera. Chrome may have been the first Windows browser to switch to a higher-resolution timer[2], and their experiments led to some interesting results.
+До недавнего времени все остальные браузеры, работающие в Windows также использовали системный таймер и были вынуждены довольствоваться точностью в 15.6 миллисекунд. Так делали Firefox, Safari и Opera.Chrome был первым браузером на Windows, который перешёл на работу с [таймером более высокой точности](http://www.belshe.com/2010/06/04/chrome-cranking-up-the-clock/), и этот эксперимент принёс интересные результаты.
 
-The original idea was for Chrome to have sub-millisecond timers, but this was abandoned in favor of a one millisecond timer resolution. They decided to use the Windows multimedia timer API, which allows you to specify a timer with a resolution as small a one millisecond and use that instead of the system timer. This is the same timer used by plugins such as Flash and Quicktime.
+Изначально, в Chrome задумывали использовать таймер с точностью в доли миллисекунды, но от этого пришлось отказаться в пользу точности таймера в одну миллисекунду. Было решено использовать вместо системеного таймер из Windows multimedia API, который позволяет использовать точность в одну миллисекунду. Этот таймер используется в плагинах для поддержки Flash и QuickTime.
 
-Chrome 1.0 beta had a one millisecond timer resolution. That seemed okay, but then the team started having bug reports. It turns out that timers cause the CPU to spin, and when the CPU is spinning, more power is being consumed because it can’t go into sleep (low power) mode.[3] That caused Chrome to push its timer resolution to 4ms.
+В бета-версии Chrome 1.0 использовался таймер с точностью в одну миллисекунду. Это прекрасно работало, но в вскоре стало поступать множество отчётов об ошибках. Причиной было то, что повышенная точность таймера заставляла процессор постоянно работать вхолостую, а когда процессор занят он потребляет больше энергии, поскольку не может перейти в спящий режим. Поэтому в Chrome были вынуждены понизить точность таймера до 4 мс.
 
-The 4ms delay was codified in HTML5 as part of the Timer section[4], where it states that the minimum resolution for setTimeout() should be 4ms. The minimum resolution for setInterval() is specified as 10ms.
+Точность в 4 мс была зафиксирована в HTML5 как часть [раздела Таймеры](http://www.whatwg.org/specs/web-apps/current-work/multipage/timers.html#timers). Этот раздел определяет точность для setTimeout() в 4 мс. Для setInterval() определена минимальная точность в 10 миллисекунд.
 
-Timer resolution today
+## Как обстоят дела сейчас
 
-Internet Explorer 9, Firefox 5, Safari 5.1, and Opera 11 all feature a 4ms timer resolution, following Chrome’s lead. Prior to that, Firefox 4 and earlier and Safari 5 and earlier had a timer resolution of 10ms (apparently, this was hardcoded in WebKit). Mobile Safari on iOS 5 also has a 4ms timer resolution. Silk on the Kindle Fire has a 10ms timer resolution, potentially indicating it was built off an older version of WebKit. However, just because today’s browsers have a timer resolution of 4ms, it doesn’t mean that’s the resolution you’ll be getting.
+Internet Explorer 9, Firefox 5, Safari 5.1 и Opera 11 используют точность таймера в 4 мс, следуя за Chrome. До этого, Firefox 4 и Safari 5 использовали точность в 10 мс (в случае с Safari, возможно, это было жёстко зашито в WebKit). Мобильная версия Safari на iOS 5 также использует точность в 4 мс, а Silk в Kindle Fire — 10 мс, что косвенно указывает на то, что он был основан на более старой версии WebKit. Тем не менее, то, что современные браузеры используют точность таймера в 4 миллисекунды, вовсе не означает, что вы всегда можете получить подобную точность.
 
-Most browsers also do some sort of timer throttling based on different conditions. The intent is to save battery at opportune times – times when, theoretically, you either won’t notice the difference or would gladly trade for improved battery life on a laptop or mobile device. Here are some circumstances where timer resolution changes:
+Большинство браузеров изменяют точность тамера в зависимости от разных условий. Цель регулировки — увеличение времени работы от батареи, когда это возможно — например, когда, теоретически, вы либо не заметите разницы, либо сделаете выбор в пользу большего времени работы от батарей на ноутбуке или мобильном устройстве. Вот несколько случаев, при которых браузеры изменяют точность таймера:
 
-Chrome and Internet Explorer 9+ switch back to the system timer when a laptop is running on battery power. When plugged in, the browser switches back to the 4ms timer resolution.
-Firefox 5+, Chrome 11+, and Internet Explorer 10+ change timer resolution in inactive tabs to 1000 milliseconds.[5]
-Mobile Safari on iOS5 and Silk on the Kindle Fire freeze the timer completely when you switch to a different app. The timer restarts when you switch back to the browser.
-Browsers will likely continue to make adjustments to timer resolution as it pertains to power consumption on battery-powered devices. The HTML5 spec leaves room for browser vendors to make such changes.
+* Chrome и Internet Explorer, начиная с 9-й версии, переключаются на работу с системным таймером, если ноутбук работает от батарей. Когда подключается внешнее питание, браузеры снова возвращаются к работе с точностью в 4 мс.
+* Firefox 5 и старше, Chrome 11 и старше, а также IE 10 [снижают точность таймера в неактивной вкладке](https://bugzilla.mozilla.org/show_bug.cgi?id=633421) до 1000 мс.
+* Мобильный Safari в iOS 5 и Silk на Kindle Fire «замораживают» таймер, если вы переключаетесь в другое приложение. Таймер перезапускается, когда вы возвращаетесь обратно в браузер.
 
+Вероятно, браузеры будут и далее изменять точность таймера для снижения энергопотребления в устройствах, работающих от батарей. Спецификация HTML 5 позволяет производителям делать подобные изменения.
  
 
-Conclusion
+## Заключение
 
-There has been a silent timer resolution evolution going on as browsers have developed over the past few years. Timer resolution isn’t one of those topics that gets discussed frequently, but if you’re using setTimeout() and setInterval(), it pays to have a deeper understanding of the functionality. We’re getting closer to the point of having per-millisecond control of the browser. When someone figures out how to manage timers without CPU interrupts, we’re likely to see timer resolution drop again. Until then, keep 4ms in mind, but remember that you still won’t always get that.
-
-Update (15 Dec 2011): Updated with information about Date object.
+За последние несколько лет точность таймера почти не обсуждалась, а в это время браузеры довольно сильно изменились. Сама по себе теме точности таймера не предполагает частых и бурных дискуссий, но если вы используете setTimeout() и setInterval(), важно иметь понимание того, как это работает. Мы приблизились к точке, когда будет возможно управлять браузером с точностью в доли миллисекунд. Как только кто-нибудь научится управлять таймером, не создавая при этом нагрузки на центральный процессор, мы получим следующее увеличние точности таймера. Пока же, имейте в виду, что максимальная точность составляет 4 мс, но помните, что вы далеко не всегда можете рассчитывать на подобную точность.
